@@ -142,7 +142,9 @@ hosts that support custom error pages.
    git push -u origin main
    ```
 
-2. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**, then re-run
+   the latest workflow (Actions → Build and deploy → Re-run jobs) or push again. Until Pages is
+   enabled, the workflow still type-checks and builds every push and skips the deploy with a warning.
 
 `.github/workflows/deploy.yml` then type-checks and builds every push and pull request, and deploys
 `main` to `https://<owner>.github.io/<repo>/`. The `/<repo>/` base path is applied automatically. For a
