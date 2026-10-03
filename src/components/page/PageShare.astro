@@ -1,0 +1,55 @@
+---
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+  /** Absolute URL of the page being shared. */
+  url: string;
+}
+
+const { lang, url } = Astro.props;
+const t = useTranslations(lang);
+const encoded = encodeURIComponent(url);
+
+const targets = [
+  { id: "bluesky", label: "Bluesky", icon: "fa-bluesky", href: `https://bsky.app/intent/compose?text=${encoded}` },
+  {
+    id: "facebook",
+    label: "Facebook",
+    icon: "fa-facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encoded}`,
+  },
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    icon: "fa-linkedin",
+    href: `https://www.linkedin.com/shareArticle?mini=true&url=${encoded}`,
+  },
+  {
+    id: "mastodon",
+    label: "Mastodon",
+    icon: "fa-mastodon",
+    href: `https://www.addtoany.com/add_to/mastodon?linkurl=${encoded}`,
+  },
+  { id: "x", label: t("share.x"), icon: "fa-x-twitter", href: `https://x.com/intent/post?text=${encoded}` },
+];
+---
+
+<section class="page__share">
+  <h4 class="page__share-title">{t("share.title")}</h4>
+  {targets.map((target) => (
+    <>
+      <a
+        href={target.href}
+        class={`btn btn--${target.id}`}
+        title={`${t("share.title")} ${target.label}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class={`fab ${target.icon}`} aria-hidden="true" />
+        <span>{` ${target.label}`}</span>
+      </a>{" "}
+    </>
+  ))}
+</section>

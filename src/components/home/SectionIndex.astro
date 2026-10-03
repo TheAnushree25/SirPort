@@ -1,0 +1,26 @@
+---
+import type { HomeContent } from "@/data/home";
+import { withBase } from "@/lib/url";
+
+interface Props {
+  index: HomeContent["index"];
+  label: string;
+}
+
+const { index, label } = Astro.props;
+---
+
+<section class="section section--tight">
+  <div class="wrap">
+    <p class="eyebrow">{index.eyebrow}</p>
+    <nav class="index" aria-label={label}>
+      {index.items.map((item, i) => (
+        <a href={withBase(item.href)}>
+          <span class="num">{String(i + 1).padStart(2, "0")}</span>
+          <span class="title">{item.title}</span>
+          <span class="desc">{item.desc}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</section>

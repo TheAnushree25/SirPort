@@ -1,0 +1,37 @@
+---
+/**
+ * Home page teaching rows. Uses the markup and classes of the reference
+ * design's books list (.books / .item / .bt / .bm), fed from the teaching
+ * collection.
+ */
+import type { HomeContent } from "@/data/home";
+import type { TeachingEntry } from "@/lib/content";
+import { escapeHtml } from "@/lib/html";
+import SplitSection from "./SplitSection.astro";
+
+interface Props {
+  teaching: HomeContent["teaching"];
+  entries: TeachingEntry[];
+}
+
+const { teaching, entries } = Astro.props;
+
+const meta = ({ data }: TeachingEntry): string =>
+  [escapeHtml(data.type), escapeHtml(data.venue)].join(" · ") +
+  (data.period ? `&nbsp; <em>· ${escapeHtml(data.period)}</em>` : "");
+---
+
+<SplitSection eyebrow={teaching.eyebrow}>
+  <h2>{teaching.heading}</h2>
+  <div class="prose">
+    <p>{teaching.intro}</p>
+  </div>
+  <div class="books">
+    {entries.map((entry) => (
+      <div class="item">
+        <span class="bt">{entry.data.title}</span>
+        <span class="bm" set:html={meta(entry)} />
+      </div>
+    ))}
+  </div>
+</SplitSection>

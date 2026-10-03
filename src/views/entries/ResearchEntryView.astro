@@ -1,0 +1,44 @@
+---
+import { render } from "astro:content";
+
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+import { formatDate, isoDate } from "@/i18n/utils";
+import EntryLayout from "@/layouts/EntryLayout.astro";
+import { entryUrl, type ResearchEntry } from "@/lib/content";
+import { stripHtml } from "@/lib/html";
+
+interface Props {
+  lang: Lang;
+  entry: ResearchEntry;
+  previous?: ResearchEntry;
+  next?: ResearchEntry;
+}
+
+const { lang, entry, previous, next } = Astro.props;
+const t = useTranslations(lang);
+const { Content } = await render(entry);
+const { date } = entry.data;
+const link = (other?: ResearchEntry) => other && { href: entryUrl(other, lang), title: other.data.title };
+---
+
+<EntryLayout
+  lang={lang}
+  title={entry.data.title}
+  path={`/portfolio/${entry.id}/`}
+  description={stripHtml(entry.data.excerpt)}
+  date={date}
+  previous={link(previous)}
+  next={link(next)}
+  math={entry.data.math}
+>
+  {date && (
+    <p class="page__date" slot="meta">
+      <strong>
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {t("meta.published")}
+      </strong>{" "}
+      <time datetime={isoDate(date)}>{formatDate(date, lang)}</time>
+    </p>
+  )}
+  <Content />
+</EntryLayout>

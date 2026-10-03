@@ -1,0 +1,30 @@
+---
+/**
+ * One row in an archive list: linked title followed by slotted meta paragraphs.
+ */
+interface Props {
+  href: string;
+  title: string;
+  /** Heading level; CV lists nest items under section headings. */
+  level?: 2 | 3;
+  /** Render the row as a list item (CV bullet lists). */
+  as?: "div" | "li";
+  /** The title links off-site (opens in a new tab). */
+  external?: boolean;
+}
+
+const { href, title, level = 2, as = "div", external = false } = Astro.props;
+const Heading = level === 3 ? "h3" : "h2";
+const Row = as;
+---
+
+<Row class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    <Heading class="archive__item-title" itemprop="headline">
+      <a href={href} rel={external ? "noopener" : "permalink"} target={external ? "_blank" : undefined}>
+        {title}
+      </a>
+    </Heading>
+    <slot />
+  </article>
+</Row>

@@ -1,0 +1,60 @@
+---
+import ArchiveItem from "@/components/archive/ArchiveItem.astro";
+import EntryMeta from "@/components/archive/EntryMeta.astro";
+import { pagesCopy } from "@/data/pages";
+import type { Lang } from "@/i18n/config";
+import ArchiveLayout from "@/layouts/ArchiveLayout.astro";
+import { entryUrl, getTeaching } from "@/lib/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = pagesCopy[lang].teaching;
+const courses = await getTeaching();
+---
+
+<ArchiveLayout lang={lang} title={copy.title} path="/teaching/" class="archive--with-intro">
+  <div class="archive-intro">
+    {copy.intro.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+  </div>
+  {copy.panels.map((panel) => (
+    <section class="feature-panel" aria-labelledby={`${panel.id}-title`}>
+      <p class="feature-panel__kicker">{panel.kicker}</p>
+      <h2 id={`${panel.id}-title`}>
+        {panel.headingHref ? (
+          <a href={panel.headingHref} target="_blank" rel="noopener">
+            {panel.heading}
+          </a>
+        ) : (
+          panel.heading
+        )}
+      </h2>
+      {panel.programme && <p class="feature-panel__programme" set:html={panel.programme} />}
+      {panel.meta && <p class="feature-panel__meta">{panel.meta}</p>}
+      {panel.paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+      {panel.links && (
+        <p class="feature-panel__links">
+          {panel.links.map((link, index) => (
+            <>
+              {index > 0 && <span aria-hidden="true">·</span>}
+              <a href={link.href} target="_blank" rel="noopener">
+                {link.label}
+              </a>
+            </>
+          ))}
+        </p>
+      )}
+    </section>
+  ))}
+  {courses.map((entry) => (
+    <ArchiveItem href={entryUrl(entry, lang)} title={entry.data.title}>
+      <EntryMeta entry={entry} lang={lang} />
+    </ArchiveItem>
+  ))}
+</ArchiveLayout>

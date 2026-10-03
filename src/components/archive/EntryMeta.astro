@@ -1,0 +1,65 @@
+---
+/**
+ * The meta lines shown under an archive item title, per collection type.
+ */
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+import {
+  bibtexHref,
+  courseLine,
+  formatCitation,
+  publicationExcerpt,
+  publisherHref,
+  venueLine,
+  type AnyEntry,
+} from "@/lib/content";
+
+interface Props {
+  entry: AnyEntry;
+  lang: Lang;
+}
+
+const { entry, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const publication = entry.collection === "publications" ? entry : undefined;
+const citation = publication && formatCitation(publication);
+const excerpt = publication && publicationExcerpt(publication);
+const publisher = publication && publisherHref(publication);
+const bibtex = publication && bibtexHref(publication);
+---
+
+{publication && (
+  <>
+    <p set:html={venueLine(publication)} />
+    {excerpt && <p class="archive__item-excerpt" itemprop="description" set:html={excerpt} />}
+    {citation ? (
+      <p>
+        {t("pub.citation")}: <Fragment set:html={citation} />
+        {(publisher || bibtex) && (
+          <>
+            <br />
+            {publisher && <a href={publisher}>{t("pub.doi")}</a>}
+            {publisher && bibtex && " | "}
+            {bibtex && <a href={bibtex}>{t("pub.bibtex")}</a>}
+          </>
+        )}
+      </p>
+    ) : (
+      publisher && (
+        <p>
+          <a href={publisher}>{t("pub.doi")}</a>
+        </p>
+      )
+    )}
+  </>
+)}
+{entry.collection === "teaching" && (
+  <>
+    <p set:html={courseLine(entry)} />
+    <p class="archive__item-excerpt" itemprop="description" set:html={entry.data.excerpt} />
+  </>
+)}
+{entry.collection === "research" && (
+  <p class="archive__item-excerpt" itemprop="description" set:html={entry.data.excerpt} />
+)}

@@ -1,0 +1,67 @@
+---
+/**
+ * Home page publication rows. Uses the markup and classes of the reference
+ * design's talks list (.talks / .work / .wt / .venues), fed from the
+ * publications collection.
+ */
+import Separated from "@/components/common/Separated.astro";
+import type { HomeContent, Link } from "@/data/home";
+import { joinNames, type PublicationEntry } from "@/lib/content";
+import { escapeHtml } from "@/lib/html";
+import { withBase } from "@/lib/url";
+import SplitSection from "./SplitSection.astro";
+
+interface Props {
+  publications: HomeContent["publications"];
+  entries: PublicationEntry[];
+  more: { label: string; href: string };
+}
+
+const { publications, entries, more } = Astro.props;
+
+/** Venue (with publisher for chapters), year and co-authors on one dot-separated line. */
+function venues({ data }: PublicationEntry): string[] {
+  const locator = data.volume ? ` ${escapeHtml(data.volume)}${data.issue ? `(${escapeHtml(data.issue)})` : ""}` : "";
+  return [
+    `${data.category === "chapter" ? "In " : ""}<i>${escapeHtml(data.venue)}</i>${locator}`,
+    ...(data.publisher ? [escapeHtml(data.publisher)] : []),
+    String(data.year),
+    ...(data.coauthors.length ? [`with ${escapeHtml(joinNames(data.coauthors))}`] : []),
+  ];
+}
+
+function links({ data }: PublicationEntry): Link[] {
+  return [
+    ...(data.pdf ? [{ label: "Paper (PDF)", href: withBase(data.pdf) }] : []),
+    ...(data.doi ? [{ label: "DOI", href: data.doi }] : []),
+    ...(data.url ? [{ label: "Publisher page", href: data.url }] : []),
+  ];
+}
+---
+
+<SplitSection eyebrow={publications.eyebrow}>
+  <h2>{publications.heading}</h2>
+  <div class="prose">
+    <p>{publications.intro}</p>
+  </div>
+  <div class="talks">
+    {entries.map((entry) => (
+      <div class="work">
+        <div class="wt">
+          <h3>{entry.data.title}</h3>
+          {links(entry).map((link) => (
+            <a class="slides" href={link.href}>
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <p class="venues">
+          <Separated items={venues(entry)} />
+        </p>
+      </div>
+    ))}
+  </div>
+  <p class="more">
+    <a href={more.href}>{more.label}</a>
+  </p>
+</SplitSection>

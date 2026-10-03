@@ -1,0 +1,56 @@
+// -----------------------------------------------------------------------------
+// Sass-only settings. Nothing in this file emits CSS.
+// -----------------------------------------------------------------------------
+
+// Structural breakpoints (min-width, em based so they follow the root font size).
+$bp-small: 37.5em; // 600px
+$bp-medium: 48em; // 768px — root type steps from 16px to 18px here
+$bp-large: 57.8125em; // 925px
+
+// Brand-layer breakpoints (max-width, px based).
+$bp-stack-sidebar: 1120px; // sidebar folds above the content
+$bp-stack-hero: 880px; // hero and split sections become single column
+$bp-compact: 620px; // compact index rows
+$bp-phone: 600px;
+$bp-nav-spacious: 925px; // roomier spacing between top-level nav links
+
+// System stack used by the structural theme for utility chrome
+// (sidebar profile, share heading, tables, form controls).
+$font-system:
+  -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial,
+  sans-serif;
+$font-mono: Monaco, Consolas, "Lucida Console", monospace;
+$font-caption: Georgia, Times, serif;
+
+// Colour palettes. Emitted as custom properties in base/_tokens.scss.
+$palette-light: (
+  "paper": #f6f2ea,
+  "paper-2": #ece5d8,
+  "ink": #1b1e23,
+  "body": #34383f,
+  "muted": #5f636a,
+  "faint": #6f695e,
+  "rule": #d9d1c2,
+  "rule-soft": #e8dfcf,
+  "accent": #234b38,
+  "accent-deep": #173529,
+  "ochre": #9a7a2e,
+  "ochre-text": #7d5f1c,
+  "accent-line": rgba(35, 75, 56, 0.28),
+);
+
+$palette-dark: (
+  "paper": #15181b,
+  "paper-2": #1c2024,
+  "ink": #f1f3f2,
+  "body": #cdd2d2,
+  "muted": #9aa2a2,
+  "faint": #868e8e,
+  "rule": #2b3033,
+  "rule-soft": #23282b,
+  "accent": #86b9b1,
+  "accent-deep": #a9d0c9,
+  "ochre": #cf8a52,
+  "ochre-text": #d49a68,
+  "accent-line": rgba(134, 185, 177, 0.42),
+);

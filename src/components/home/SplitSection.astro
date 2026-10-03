@@ -1,0 +1,20 @@
+---
+/** Two-column section: eyebrow label on the left, content on the right. */
+interface Props {
+  eyebrow: string;
+  class?: string;
+}
+
+const { eyebrow, class: className } = Astro.props;
+---
+
+<section class:list={["section", className]}>
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+    </div>
+    <div>
+      <slot />
+    </div>
+  </div>
+</section>

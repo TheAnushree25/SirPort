@@ -1,0 +1,26 @@
+{
+  "name": "Imdadul Islam Halder — Economics",
+  "short_name": "I. I. Halder",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f2ea",
+  "theme_color": "#234b38",
+  "icons": [
+    {
+      "src": "favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

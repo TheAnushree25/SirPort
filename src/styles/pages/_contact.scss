@@ -1,0 +1,191 @@
+// -----------------------------------------------------------------------------
+// Contact page: grouped link rows with icon, label, detail and a nudging arrow,
+// plus the QR card and fine print.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+.contact-page {
+  max-width: 44rem;
+}
+
+.contact-lead {
+  max-width: 40rem;
+  margin: 0 0 2rem;
+  color: var(--body);
+  font-family: var(--brand-serif);
+  font-size: clamp(1.08rem, 1.8vw, 1.28rem);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.contact-methods {
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.contact-page .contact-group {
+  max-width: none;
+  margin: 0;
+  padding: 1.75rem 0 0.6rem;
+  color: var(--muted) !important;
+  font-family: var(--brand-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.contact-method {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr) auto;
+  gap: 0.95rem;
+  align-items: center;
+  padding: 0.95rem 0;
+  color: var(--body);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-soft);
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+.contact-method,
+.contact-method:hover,
+.contact-method *,
+.contact-method:hover * {
+  text-decoration: none !important;
+}
+
+.contact-method *,
+.contact-method:hover * {
+  border-bottom: 0;
+}
+
+.contact-method__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.45rem;
+  color: var(--accent);
+  font-size: 1rem;
+
+  .ai-orcid {
+    color: #a6ce39;
+  }
+
+  .linkedin-icon {
+    color: #0a66c2;
+  }
+}
+
+.contact-method__text {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+
+  strong {
+    color: var(--ink);
+    font-family: var(--brand-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  small {
+    color: var(--muted);
+    font-family: var(--brand-sans);
+    font-size: 0.83rem;
+    line-height: 1.4;
+  }
+}
+
+.contact-method__arrow {
+  color: var(--faint);
+  font-family: var(--brand-sans);
+  font-size: 0.95rem;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.contact-method:hover .contact-method__text strong,
+.contact-method:hover .contact-method__arrow {
+  color: var(--accent);
+}
+
+.contact-method:hover .contact-method__arrow {
+  transform: translateX(3px);
+}
+
+// Information rows without a link (e.g. the department) do not react to hover.
+.contact-method--static {
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+
+  &:hover {
+    color: var(--body);
+  }
+
+  &:hover .contact-method__text strong {
+    color: var(--ink);
+  }
+}
+
+.contact-qr {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7rem;
+  gap: clamp(1rem, 4vw, 2rem);
+  align-items: center;
+  max-width: 40rem;
+  margin-top: 1.6rem;
+
+  h2 {
+    margin: 0 0 0.4rem;
+    padding: 0;
+    color: var(--ink);
+    font-family: var(--brand-serif);
+    font-size: 1.2rem;
+    line-height: 1.25;
+    border: 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--brand-sans);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  img {
+    width: 7rem;
+    max-width: 100%;
+    padding: 0.4rem;
+    background: #fff;
+    border: 1px solid var(--rule);
+  }
+}
+
+.contact-qr__link {
+  display: inline-flex;
+  border: 0;
+}
+
+.contact-fine {
+  max-width: 40rem;
+  margin: 1.8rem 0 0;
+  color: var(--faint);
+  font-family: var(--brand-sans);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+@media (max-width: $bp-phone) {
+  .contact-method__arrow {
+    display: none;
+  }
+
+  .contact-qr {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

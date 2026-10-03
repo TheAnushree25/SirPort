@@ -1,0 +1,21 @@
+---
+/**
+ * Render-blocking inline scripts. Kept tiny on purpose: they run before first
+ * paint so the page never flashes the wrong theme.
+ */
+---
+
+<script is:inline>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, "") + " js ";
+</script>
+
+<!-- Apply the saved (or system) colour theme before first paint. -->
+<script is:inline>
+  (function () {
+    try {
+      var saved = localStorage.getItem("theme");
+      var dark = saved === "dark" || (saved !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      if (dark) document.documentElement.setAttribute("data-theme", "dark");
+    } catch (e) {}
+  })();
+</script>

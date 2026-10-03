@@ -1,0 +1,58 @@
+---
+import "@fortawesome/fontawesome-free/css/fontawesome.min.css";
+import "@fortawesome/fontawesome-free/css/solid.min.css";
+import "@fortawesome/fontawesome-free/css/brands.min.css";
+import "academicons/css/academicons.min.css";
+import "@/styles/main.scss";
+
+import BaseHead from "@/components/head/BaseHead.astro";
+import Masthead from "@/components/layout/Masthead.astro";
+import MathJax from "@/components/page/MathJax.astro";
+import { HTML_LANG, type Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Canonical path of the page. */
+  path: string;
+  /** Layout variant of the main frame. */
+  frame: "splash" | "sidebar";
+  ogType?: "website" | "article";
+  /** Load MathJax for TeX content. */
+  math?: boolean;
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
+}
+
+const { lang, title, description, path, frame, ogType, math = false, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<!doctype html>
+<html lang={HTML_LANG[lang]} class="no-js">
+  <head>
+    <BaseHead
+      lang={lang}
+      title={title}
+      description={description}
+      path={path}
+      ogType={ogType}
+      noindex={noindex}
+    />
+    {math && <MathJax />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {t("a11y.skip")}
+    </a>
+    <Masthead lang={lang} path={path} />
+    <main id="main" class={`main--${frame}`}>
+      <slot />
+    </main>
+    <script>
+      import "@/scripts/main";
+    </script>
+  </body>
+</html>

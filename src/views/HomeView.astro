@@ -1,0 +1,47 @@
+---
+import ContactSection from "@/components/home/ContactSection.astro";
+import Hero from "@/components/home/Hero.astro";
+import PublicationsSection from "@/components/home/PublicationsSection.astro";
+import ResearchSection from "@/components/home/ResearchSection.astro";
+import SectionIndex from "@/components/home/SectionIndex.astro";
+import TeachingSection from "@/components/home/TeachingSection.astro";
+import { homeContent } from "@/data/home";
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+import { localizePath } from "@/i18n/utils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPublications, getTeaching } from "@/lib/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const content = homeContent[lang];
+const [publications, teaching] = await Promise.all([getPublications(), getTeaching()]);
+---
+
+<BaseLayout lang={lang} title={`${profile.name} - ${profile.headline}`} description={profile.description} path="/" frame="splash">
+  <article class="splash" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content={profile.name} />
+    <section class="page__content" itemprop="text">
+      <section class="brand-home">
+        <Hero lang={lang} hero={content.hero} rail={content.rail} />
+        <SectionIndex index={content.index} label="Sections" />
+        <ResearchSection research={content.research} />
+        <PublicationsSection
+          publications={content.publications}
+          entries={publications}
+          more={{
+            label: t("publications.viewAll", { count: publications.length }),
+            href: localizePath("/publications/", lang),
+          }}
+        />
+        <TeachingSection teaching={content.teaching} entries={teaching} />
+        <ContactSection contact={content.contact} />
+      </section>
+    </section>
+  </article>
+</BaseLayout>

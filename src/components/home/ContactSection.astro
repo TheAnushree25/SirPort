@@ -1,0 +1,24 @@
+---
+import Separated from "@/components/common/Separated.astro";
+import type { HomeContent } from "@/data/home";
+import { escapeHtml } from "@/lib/html";
+import { withBase } from "@/lib/url";
+import SplitSection from "./SplitSection.astro";
+
+interface Props {
+  contact: HomeContent["contact"];
+}
+
+const { contact } = Astro.props;
+const links = contact.links.map(
+  (link) => `<a href="${escapeHtml(withBase(link.href))}">${escapeHtml(link.label)}</a>`,
+);
+---
+
+<SplitSection eyebrow={contact.eyebrow} class="contact">
+  <h2>{contact.heading}</h2>
+  <p set:html={contact.text} />
+  <p class="links">
+    <Separated items={links} />
+  </p>
+</SplitSection>

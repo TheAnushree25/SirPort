@@ -1,0 +1,35 @@
+---
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import { withBase } from "@/lib/url";
+
+interface Props {
+  /** Kept for parity with the other layout components. */
+  lang: Lang;
+}
+
+const name = profile.name;
+---
+
+<aside class="sidebar" aria-label="Author profile">
+  <div class="author" itemscope itemtype="http://schema.org/Person">
+    <div class="author__avatar">
+      <img
+        src={withBase(profile.portrait.src)}
+        width={profile.portrait.width}
+        height={profile.portrait.height}
+        alt={name}
+        itemprop="image"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="author__content">
+      <p class="author__name" itemprop="name">
+        {name}
+      </p>
+      <p class="author__bio" itemprop="description">
+        {profile.bio}
+      </p>
+    </div>
+  </div>
+</aside>

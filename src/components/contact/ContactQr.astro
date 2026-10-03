@@ -1,0 +1,32 @@
+---
+import QRCode from "qrcode";
+
+interface Props {
+  heading: string;
+  text: string;
+  url: string;
+  ariaLabel: string;
+  alt: string;
+}
+
+const { heading, text, url, ariaLabel, alt } = Astro.props;
+
+// Rendered at build time; no runtime dependency.
+const svg = await QRCode.toString(url, {
+  type: "svg",
+  margin: 1,
+  errorCorrectionLevel: "M",
+  color: { dark: "#1b1e23", light: "#ffffff" },
+});
+const src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+---
+
+<div class="contact-qr">
+  <div>
+    <h2>{heading}</h2>
+    <p>{text}</p>
+  </div>
+  <a class="contact-qr__link" href={url} target="_blank" rel="noopener" aria-label={ariaLabel}>
+    <img src={src} alt={alt} width="126" height="126" />
+  </a>
+</div>

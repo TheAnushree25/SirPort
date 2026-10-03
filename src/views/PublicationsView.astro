@@ -1,0 +1,39 @@
+---
+import ArchiveItem from "@/components/archive/ArchiveItem.astro";
+import EntryMeta from "@/components/archive/EntryMeta.astro";
+import { pagesCopy } from "@/data/pages";
+import type { Lang } from "@/i18n/config";
+import ArchiveLayout from "@/layouts/ArchiveLayout.astro";
+import { entryUrl, getPublications, groupByYear } from "@/lib/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = pagesCopy[lang].publications;
+const sections = [
+  { heading: copy.journalHeading, years: groupByYear(await getPublications("journal")) },
+  { heading: copy.chapterHeading, years: groupByYear(await getPublications("book", "chapter")) },
+].filter((section) => section.years.length > 0);
+---
+
+<ArchiveLayout lang={lang} title={copy.title} path="/publications/" description={copy.description}>
+  <div class="wordwrap" set:html={copy.intro} />
+  {sections.map(({ heading, years }) => (
+    <>
+      <h2>{heading}</h2>
+      <hr />
+      {years.map(({ year, entries }) => (
+        <>
+          <h3 class="archive__subtitle">{year}</h3>
+          {entries.map((entry) => (
+            <ArchiveItem href={entryUrl(entry, lang)} title={entry.data.title}>
+              <EntryMeta entry={entry} lang={lang} />
+            </ArchiveItem>
+          ))}
+        </>
+      ))}
+    </>
+  ))}
+</ArchiveLayout>

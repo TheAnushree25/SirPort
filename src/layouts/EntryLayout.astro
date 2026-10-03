@@ -1,0 +1,80 @@
+---
+/**
+ * Single-entry pages (papers, courses) and the contact page:
+ * profile sidebar + an article with header, content, share row and pager.
+ */
+import AuthorProfile from "@/components/layout/AuthorProfile.astro";
+import PageShare from "@/components/page/PageShare.astro";
+import Pager from "@/components/page/Pager.astro";
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import { isoDate, localizePath } from "@/i18n/utils";
+import BaseLayout from "./BaseLayout.astro";
+
+interface PagerLink {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  lang: Lang;
+  title: string;
+  path: string;
+  description?: string;
+  /** Entry pages use the calmer long-title scale. */
+  variant?: "entry" | "page";
+  /** Publication date, or just the year when that is all that is known. */
+  date?: Date | number;
+  share?: boolean;
+  previous?: PagerLink;
+  next?: PagerLink;
+  math?: boolean;
+}
+
+const {
+  lang,
+  title,
+  path,
+  description,
+  variant = "entry",
+  date,
+  share = variant === "entry",
+  previous,
+  next,
+  math,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const pageUrl = new URL(localizePath(path, lang), site).href;
+const datePublished = date === undefined ? undefined : typeof date === "number" ? String(date) : isoDate(date);
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${title} - ${profile.name}`}
+  description={description ?? profile.description}
+  path={path}
+  frame="sidebar"
+  ogType={variant === "entry" ? "article" : "website"}
+  math={math}
+>
+  <AuthorProfile lang={lang} />
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content={title} />
+    {description && <meta itemprop="description" content={description} />}
+    {datePublished && <meta itemprop="datePublished" content={datePublished} />}
+    <div class="page__inner-wrap">
+      <header>
+        <h1 class:list={["page__title", { "page__title--entry": variant === "entry" }]} itemprop="headline">
+          {title}
+        </h1>
+        <slot name="meta" />
+      </header>
+      <section class="page__content" itemprop="text">
+        <slot />
+      </section>
+      {share && <PageShare lang={lang} url={pageUrl} />}
+      {variant === "entry" && <Pager lang={lang} previous={previous} next={next} />}
+    </div>
+  </article>
+</BaseLayout>

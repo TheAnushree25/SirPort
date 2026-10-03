@@ -1,0 +1,41 @@
+---
+import type { ContactMethod } from "@/data/contact";
+import { withBase } from "@/lib/url";
+
+interface Props {
+  method: ContactMethod;
+}
+
+const { method } = Astro.props;
+---
+
+{method.href ? (
+  <a
+    class="contact-method"
+    href={withBase(method.href)}
+    target={method.external ? "_blank" : undefined}
+    rel={method.external ? "noopener" : undefined}
+    download={method.download ? "" : undefined}
+  >
+    <span class="contact-method__icon">
+      <i class={method.icon} aria-hidden="true"></i>
+    </span>
+    <span class="contact-method__text">
+      <strong>{method.label}</strong>
+      <small>{method.detail}</small>
+    </span>
+    <span class="contact-method__arrow" aria-hidden="true">
+      →
+    </span>
+  </a>
+) : (
+  <div class="contact-method contact-method--static">
+    <span class="contact-method__icon">
+      <i class={method.icon} aria-hidden="true"></i>
+    </span>
+    <span class="contact-method__text">
+      <strong>{method.label}</strong>
+      <small>{method.detail}</small>
+    </span>
+  </div>
+)}

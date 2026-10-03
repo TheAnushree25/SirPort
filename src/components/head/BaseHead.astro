@@ -1,0 +1,70 @@
+---
+import { OG_LOCALE, type Lang } from "@/i18n/config";
+import { localizePath } from "@/i18n/utils";
+import { profile } from "@/data/profile";
+import { withBase } from "@/lib/url";
+import HeadScripts from "./HeadScripts.astro";
+
+interface Props {
+  lang: Lang;
+  /** Full document title. */
+  title: string;
+  description: string;
+  /** Canonical path of this page, e.g. "/publications/". */
+  path: string;
+  ogType?: "website" | "article";
+  /** Keep the page out of search results and omit its canonical URL (the 404 page). */
+  noindex?: boolean;
+}
+
+const { lang, title, description, path, ogType = "website", noindex = false } = Astro.props;
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(localizePath(path, lang), site).href;
+const name = profile.name;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name,
+  url: new URL(localizePath("/", lang), site).href,
+  jobTitle: "Assistant Professor of Economics",
+  worksFor: { "@type": "CollegeOrUniversity", name: profile.affiliation },
+  email: `mailto:${profile.email}`,
+  sameAs: [profile.website, ...Object.values(profile.links)].filter(Boolean),
+};
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<!-- Open Graph -->
+<meta property="og:locale" content={OG_LOCALE[lang]} />
+<meta property="og:site_name" content={name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+{!noindex && <meta property="og:url" content={canonical} />}
+<meta property="og:image" content={new URL(withBase(profile.portrait.src), site).href} />
+
+<link href={new URL(withBase("/feed.xml"), site).href} type="application/rss+xml" rel="alternate" title={`${name} Feed`} />
+<link rel="sitemap" type="application/xml" href={withBase("/sitemap-index.xml")} />
+
+<HeadScripts />
+
+<!-- Icons -->
+<link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+<link rel="icon" type="image/png" href={withBase("/favicon-32x32.png")} sizes="32x32" />
+<link rel="icon" type="image/png" href={withBase("/favicon-192x192.png")} sizes="192x192" />
+<link rel="apple-touch-icon" sizes="180x180" href={withBase("/apple-touch-icon.png")} />
+<link rel="manifest" href={withBase("/site.webmanifest")} />
+
+<!-- Match the mobile browser UI to the active colour theme. -->
+<meta name="theme-color" content="#f6f2ea" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#15181b" media="(prefers-color-scheme: dark)" />
+<meta name="generator" content={Astro.generator} />

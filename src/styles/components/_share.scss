@@ -1,0 +1,51 @@
+// -----------------------------------------------------------------------------
+// "Share on" row under detail pages.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+.page__share {
+  margin-top: 2.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--global-border-color, var(--rule));
+
+  .btn,
+  .btn:visited {
+    color: var(--global-link-color, var(--accent));
+    background: var(--global-bg-color, var(--paper));
+    border: 0;
+    box-shadow: none;
+  }
+
+  .btn i,
+  .btn span {
+    color: inherit !important;
+  }
+
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--global-bg-color, var(--paper));
+    background: var(--global-link-color, var(--accent));
+    border-color: var(--global-link-color, var(--accent));
+  }
+
+  // Icons only on small screens.
+  @media (max-width: $bp-small) {
+    .btn span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      border: 0;
+    }
+  }
+}
+
+.page__share-title {
+  margin-bottom: 0.6rem;
+  color: var(--global-text-color, var(--ink));
+  font-size: 0.75em;
+  text-transform: uppercase;
+}

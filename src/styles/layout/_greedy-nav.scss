@@ -1,0 +1,226 @@
+// -----------------------------------------------------------------------------
+// Priority ("greedy") navigation. Links that do not fit are moved by
+// scripts/greedy-nav.ts into the .hidden-links dropdown behind the menu button.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+.greedy-nav {
+  position: relative;
+  min-width: 250px;
+  background: var(--paper);
+
+  a {
+    display: block;
+    margin: 0 1rem;
+    padding: 0.5rem 0;
+    color: var(--ink);
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--global-masthead-link-color-hover);
+    }
+  }
+
+  button {
+    position: absolute;
+    right: 0;
+    z-index: 100;
+    height: 2.5rem;
+    padding: 0 0.5rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 0;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .visible-links {
+    display: table;
+
+    li {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    li:first-child {
+      font-weight: bold;
+      white-space: nowrap;
+      text-wrap: nowrap;
+
+      a {
+        margin-left: 0;
+        font-family: var(--brand-serif);
+        font-size: 1.03rem;
+        font-weight: 600;
+      }
+    }
+
+    li:last-child a {
+      margin-right: 0;
+    }
+
+    a {
+      position: relative;
+
+      // Hairline underline that grows in from the centre on hover.
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--accent-line);
+        transform: scaleX(0);
+        transition: all 0.2s ease-in-out;
+      }
+
+      &:hover::before {
+        transform: scaleX(1);
+      }
+    }
+
+    #theme-toggle a {
+      display: flex;
+      justify-content: center;
+      width: 25px;
+      margin: 0 0 0 0.35rem;
+      cursor: pointer;
+    }
+  }
+
+  .hidden-links {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 15px;
+    padding: 5px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    box-shadow: 0 12px 24px rgba(27, 30, 33, 0.08);
+
+    // Caret: an outer triangle in the border colour with an inner one in the
+    // background colour laid 1px lower.
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      display: block;
+      width: 0;
+      border-style: solid;
+      border-width: 0 10px 10px;
+    }
+
+    &::before {
+      top: -11px;
+      z-index: 0;
+      border-color: var(--global-border-color) transparent;
+    }
+
+    &::after {
+      top: -10px;
+      z-index: 1;
+      border-color: var(--global-bg-color) transparent;
+    }
+
+    li {
+      display: block;
+      border-bottom: 1px solid var(--global-border-color);
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    a {
+      margin: 0;
+      padding: 10px 20px;
+      font-size: 1em;
+
+      &:hover {
+        color: var(--accent-deep);
+        background: var(--paper-2);
+      }
+    }
+  }
+}
+
+html[data-theme="dark"] .greedy-nav .hidden-links {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: $bp-nav-spacious) {
+  .greedy-nav .visible-links li:not(:first-child):not(.masthead__controls) a {
+    margin: 0 0.8rem;
+  }
+}
+
+// Current section.
+.greedy-nav .visible-links a.is-current {
+  color: var(--accent);
+
+  &::before {
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(1);
+  }
+}
+
+.greedy-nav .hidden-links a.is-current {
+  color: var(--accent);
+  font-weight: 650;
+}
+
+// Hamburger icon that morphs into a cross while the dropdown is open.
+.navicon {
+  position: relative;
+  display: inline-block;
+  width: 28px;
+  height: 4px;
+  margin: auto;
+  vertical-align: middle;
+  background: var(--global-masthead-link-color);
+  transition: 0.3s;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 28px;
+    height: 4px;
+    background: var(--global-masthead-link-color);
+    transition: 0.3s;
+  }
+
+  &::before {
+    top: -8px;
+  }
+
+  &::after {
+    bottom: -8px;
+  }
+}
+
+.close .navicon {
+  background: transparent;
+
+  &::before,
+  &::after {
+    top: 0;
+    width: 28px;
+    transform-origin: 50% 50%;
+  }
+
+  &::before {
+    transform: rotate3d(0, 0, 1, 45deg);
+  }
+
+  &::after {
+    transform: rotate3d(0, 0, 1, -45deg);
+  }
+}

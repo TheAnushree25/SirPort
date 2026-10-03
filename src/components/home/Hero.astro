@@ -1,0 +1,86 @@
+---
+import type { HomeContent } from "@/data/home";
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import { tr } from "@/i18n/utils";
+import { withBase } from "@/lib/url";
+
+interface Props {
+  lang: Lang;
+  hero: HomeContent["hero"];
+  rail: HomeContent["rail"];
+}
+
+const { lang, hero, rail } = Astro.props;
+const external = { target: "_blank", rel: "noopener" };
+---
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1>{tr(profile.name, lang)}</h1>
+        <p class="hero__role">{hero.role}</p>
+        <p class="hero__creds">
+          {hero.creds.map((cred, index) => (
+            <>
+              {index > 0 && <Fragment set:html="&nbsp; · &nbsp;" />}
+              {typeof cred === "string" ? (
+                cred
+              ) : (
+                <a href={withBase(cred.href)} {...(cred.external ? external : {})}>
+                  {cred.label}
+                </a>
+              )}
+            </>
+          ))}
+        </p>
+        <p class="hero__credential">
+          {hero.credential.text}
+          {(hero.credential.link || hero.credential.detail) && (
+            <>
+              {" "}
+              <span class="sep">·</span>{" "}
+              {hero.credential.link ? (
+                <a href={withBase(hero.credential.link.href)} {...(hero.credential.link.external ? external : {})}>
+                  {hero.credential.link.label}
+                </a>
+              ) : (
+                hero.credential.detail
+              )}
+            </>
+          )}
+        </p>
+        <p class="hero__lead" set:html={hero.lead} />
+        <div class="hero__links">
+          {hero.links.map((link) => (
+            <a class="inline-link" href={withBase(link.href)}>
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+      <aside class="rail" aria-label="Profile and current roles">
+        <figure class="hero__portrait">
+          <img
+            src={withBase(profile.portrait.src)}
+            width={profile.portrait.width}
+            height={profile.portrait.height}
+            alt={profile.portrait.alt}
+            loading="lazy"
+          />
+        </figure>
+        <p class="eyebrow">{rail.eyebrow}</p>
+        <ul>
+          {rail.items.map((item) => (
+            <li>
+              <Fragment set:html={item.title} />
+              <span set:html={item.detail} />
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>

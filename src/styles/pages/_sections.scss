@@ -1,0 +1,163 @@
+// -----------------------------------------------------------------------------
+// Inner-page blocks: archive intros, feature panels (teaching) and the CV
+// download block.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+// Archive pages that open with an intro block drop the title rule.
+.archive--with-intro > .page__title {
+  margin-bottom: 1rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.archive-intro {
+  max-width: var(--measure);
+  margin: 0 0 2rem;
+  padding-bottom: 1.8rem;
+  border-bottom: 1px solid var(--rule);
+
+  p {
+    margin: 0;
+    color: var(--body);
+    font-family: var(--brand-serif);
+    font-size: 1.06rem;
+    line-height: 1.65;
+  }
+
+  p + p {
+    margin-top: 0.75rem;
+  }
+}
+
+.archive-intro + .list__item {
+  padding-top: 0;
+  border-top: 0;
+}
+
+// Feature panel: kicker, heading, meta and links between two rules.
+.feature-panel {
+  max-width: 52rem;
+  margin: 0 0 2.4rem;
+  padding: 1.35rem 0 1.5rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+
+  + .list__item {
+    border-top: 0;
+  }
+}
+
+.archive .feature-panel__kicker {
+  margin: 0 0 0.55rem;
+  color: var(--ochre-text);
+  font-family: var(--brand-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.archive .feature-panel {
+  h2 {
+    margin: 0 0 0.35rem;
+    padding: 0;
+    color: var(--ink);
+    font-family: var(--brand-serif);
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.2;
+    border: 0;
+
+    a {
+      color: var(--ink);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+
+  p {
+    max-width: var(--measure);
+    margin: 0.65rem 0 0;
+    color: var(--body);
+    font-family: var(--brand-serif);
+    font-size: 1.02rem;
+    line-height: 1.62;
+  }
+}
+
+.archive .feature-panel__programme,
+.archive .feature-panel__meta,
+.archive .feature-panel__links {
+  font-family: var(--brand-sans);
+}
+
+.archive .feature-panel__programme {
+  margin-top: 0;
+  color: var(--body);
+  font-size: 0.94rem;
+}
+
+.archive .feature-panel__meta {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.archive .feature-panel__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  color: var(--faint);
+  font-size: 0.84rem;
+
+  a {
+    color: var(--accent);
+    font-weight: 650;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent-deep);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+}
+
+// CV: generated publication / course lists render each row as a
+// bulleted list item, keeping the row rhythm of the archive pages.
+.cv-list > .list__item {
+  margin-bottom: 0;
+  padding-bottom: calc(1.15rem + 0.5em);
+  line-height: 1.5;
+}
+
+// CV download block.
+.cv-download-links {
+  max-width: var(--measure);
+  margin: 0 0 2.4rem;
+
+  p {
+    margin: 0 0 0.9rem;
+    color: var(--body);
+    font-family: var(--brand-serif);
+    font-size: 1.05rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1rem;
+    color: var(--accent);
+    font-weight: 600;
+    background: var(--paper-2);
+    border: 1px solid var(--accent-line);
+
+    &:hover {
+      color: var(--accent-deep);
+      border-color: var(--accent);
+    }
+  }
+}

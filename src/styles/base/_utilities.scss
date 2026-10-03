@@ -1,0 +1,44 @@
+// -----------------------------------------------------------------------------
+// Utilities.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  border: 0 !important;
+}
+
+// Keyboard-only shortcut to the main content; invisible until focused.
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100000;
+  padding: 0.6rem 1rem;
+  color: var(--ink);
+  font-family: $font-system;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-decoration: none;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
+}
+
+.wordwrap {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}

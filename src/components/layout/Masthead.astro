@@ -1,0 +1,55 @@
+---
+import { isActiveSection, mainNav } from "@/data/navigation";
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+import { localizePath, tr } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  /** Canonical path of the current page. */
+  path: string;
+}
+
+const { lang, path } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav" aria-label={t("nav.primary")}>
+        <button type="button" aria-label={t("a11y.menu")} aria-controls="site-nav-overflow" aria-expanded="false">
+          <span class="navicon"></span>
+        </button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg persist">
+            <a href={localizePath("/", lang)}>{profile.name}</a>
+          </li>
+          {mainNav.map((item) => {
+            const current = isActiveSection(item, path);
+            return (
+              <li class="masthead__menu-item">
+                <a
+                  href={localizePath(item.href, lang)}
+                  class={current ? "is-current" : undefined}
+                  aria-current={current ? "page" : undefined}
+                >
+                  {tr(item.label, lang)}
+                </a>
+              </li>
+            );
+          })}
+          <li class="masthead__menu-item masthead__controls persist tail">
+            <span id="theme-toggle">
+              <a role="button" tabindex="0" aria-label={t("theme.toggle")}>
+                <i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i>
+              </a>
+            </span>
+          </li>
+        </ul>
+        <ul id="site-nav-overflow" class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>

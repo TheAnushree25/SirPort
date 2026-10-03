@@ -1,0 +1,76 @@
+---
+import { render } from "astro:content";
+
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+import EntryLayout from "@/layouts/EntryLayout.astro";
+import {
+  bibtexHref,
+  entryUrl,
+  formatCitation,
+  paperHref,
+  publicationExcerpt,
+  publisherHref,
+  venueLine,
+  type PublicationEntry,
+} from "@/lib/content";
+import { stripHtml } from "@/lib/html";
+
+interface Props {
+  lang: Lang;
+  entry: PublicationEntry;
+  previous?: PublicationEntry;
+  next?: PublicationEntry;
+}
+
+const { lang, entry, previous, next } = Astro.props;
+const t = useTranslations(lang);
+const { Content } = await render(entry);
+const { data } = entry;
+
+const hasAbstract = Boolean(entry.body?.trim());
+const citation = formatCitation(entry);
+// Without a citation (author order unknown) the co-author line carries the authorship.
+const summary = citation ? undefined : publicationExcerpt(entry);
+const publisher = publisherHref(entry);
+const paper = paperHref(entry);
+const bibtex = bibtexHref(entry);
+const link = (other?: PublicationEntry) => other && { href: entryUrl(other, lang), title: other.data.title };
+---
+
+<EntryLayout
+  lang={lang}
+  title={data.title}
+  path={`/publication/${entry.id}/`}
+  description={stripHtml(`${data.title}. ${publicationExcerpt(entry)}`)}
+  date={data.year}
+  previous={link(previous)}
+  next={link(next)}
+>
+  <p slot="meta" set:html={venueLine(entry)} />
+  {summary && <p set:html={summary} />}
+  {hasAbstract && (
+    <>
+      <h2 id="abstract">{t("pub.abstract")}</h2>
+      <Content />
+    </>
+  )}
+  {publisher && (
+    <p>
+      <a href={publisher}>{t("pub.doi")}</a>
+    </p>
+  )}
+  {citation && (
+    <p style="font-size: smaller">
+      {t("pub.citation")}: <Fragment set:html={citation} />
+      {(paper || bibtex) && (
+        <>
+          <br />
+          {paper && <a href={paper}>{t("pub.downloadPaper")}</a>}
+          {paper && bibtex && " | "}
+          {bibtex && <a href={bibtex}>{t("pub.downloadBibtex")}</a>}
+        </>
+      )}
+    </p>
+  )}
+</EntryLayout>

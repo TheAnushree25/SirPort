@@ -1,0 +1,59 @@
+---
+import ArchiveItem from "@/components/archive/ArchiveItem.astro";
+import { pagesCopy } from "@/data/pages";
+import { videos, type Video } from "@/data/videos";
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+import { formatDate } from "@/i18n/utils";
+import ArchiveLayout from "@/layouts/ArchiveLayout.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const copy = pagesCopy[lang].videos;
+
+/** Topics in first-seen order, each with its videos in listed order. */
+const topics = videos.reduce<Array<{ topic: string; items: Video[] }>>((groups, video) => {
+  const group = groups.find((g) => g.topic === video.topic);
+  if (group) group.items.push(video);
+  else groups.push({ topic: video.topic, items: [video] });
+  return groups;
+}, []);
+---
+
+<ArchiveLayout lang={lang} title={copy.title} path="/videos/" class="archive--with-intro">
+  <div class="archive-intro">
+    {copy.intro.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+    {topics.length === 0 && <p>{copy.empty}</p>}
+  </div>
+  {topics.map(({ topic, items }) => (
+    <>
+      <h2>{topic}</h2>
+      {items.map((video) => (
+        <ArchiveItem href={video.url} title={video.title} external>
+          {(video.date || video.duration) && (
+            <p class="page__meta">
+              <i class="fa fa-clock" aria-hidden="true" />{" "}
+              {[video.date && formatDate(new Date(video.date), lang), video.duration].filter(Boolean).join(" · ")}
+            </p>
+          )}
+          {video.description && (
+            <p class="archive__item-excerpt" itemprop="description">
+              {video.description}
+            </p>
+          )}
+          <p>
+            <a href={video.url} target="_blank" rel="noopener">
+              {t("video.watch")}
+            </a>
+          </p>
+        </ArchiveItem>
+      ))}
+    </>
+  ))}
+</ArchiveLayout>

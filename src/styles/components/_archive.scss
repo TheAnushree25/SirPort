@@ -1,0 +1,172 @@
+// -----------------------------------------------------------------------------
+// Archive pages: intro copy, section headings, year dividers and list items.
+// -----------------------------------------------------------------------------
+
+.archive {
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.archive > p,
+.archive > .wordwrap {
+  max-width: var(--measure);
+  color: var(--body);
+  font-family: var(--brand-serif);
+  font-size: 1.08rem;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.archive > .wordwrap {
+  margin-bottom: 2rem;
+}
+
+.archive > p a,
+.archive > ul a,
+.archive__item p a,
+.wordwrap a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--accent-line);
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+// Section headings inside an archive (e.g. "Journal articles", CV sections).
+.archive > h1:not(.page__title),
+.archive > h2:not(.archive__item-title):not(.page__title) {
+  margin: 2.6rem 0 1rem;
+  padding: 1rem 0 0;
+  color: var(--ink);
+  font-family: var(--brand-serif);
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.22;
+  border-top: 1px solid var(--rule);
+  border-bottom: 0;
+  text-wrap: balance;
+}
+
+.archive > h2:not(.archive__item-title) + hr {
+  display: none;
+}
+
+.archive > h1:not(.page__title) + ul,
+.archive > h2:not(.archive__item-title):not(.page__title) + ul {
+  margin-top: 0.4rem;
+}
+
+.archive > ul {
+  max-width: 48rem;
+  padding-left: 1.2rem;
+
+  > li {
+    margin-bottom: 0.7rem;
+    line-height: 1.65;
+
+    > p {
+      margin: 0;
+    }
+  }
+}
+
+// Year divider.
+.archive .archive__subtitle {
+  margin: 2rem 0 0.2rem;
+  padding: 0 0 0.45rem;
+  color: var(--ochre-text);
+  font-family: var(--brand-sans);
+  font-size: 0.82rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--rule);
+}
+
+.archive > h2 + hr + .archive__subtitle {
+  margin-top: 0.4rem;
+}
+
+.archive__subtitle + .list__item .archive__item-title {
+  margin-top: 0.5em;
+}
+
+.archive .archive__subtitle + .list__item {
+  border-top: 0;
+}
+
+// List items.
+.list__item {
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--rule);
+
+  &:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .page__meta {
+    margin: 0 0 4px;
+  }
+}
+
+.archive__item {
+  color: var(--body);
+}
+
+.archive__item-title {
+  margin: 0 0 0.35rem;
+  padding: 0;
+  color: var(--ink);
+  font-family: var(--brand-serif);
+  font-size: clamp(1.12rem, 2vw, 1.28rem);
+  font-weight: 500;
+  line-height: 1.32;
+  border: 0;
+  text-wrap: balance;
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+
+      &::after {
+        content: " \2192";
+        color: var(--accent);
+      }
+    }
+  }
+}
+
+.archive__item p,
+.archive__item-excerpt,
+.page__meta {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-family: var(--brand-sans);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.archive__item-excerpt {
+  text-wrap: pretty;
+
+  p {
+    margin: 0;
+    font-size: 1em;
+  }
+}
+
+.archive__item p a {
+  color: var(--accent);
+}

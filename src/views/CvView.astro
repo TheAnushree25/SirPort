@@ -1,0 +1,109 @@
+---
+import ArchiveItem from "@/components/archive/ArchiveItem.astro";
+import { cvContent } from "@/data/cv";
+import { pagesCopy } from "@/data/pages";
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import ArchiveLayout from "@/layouts/ArchiveLayout.astro";
+import {
+  coauthorLine,
+  courseLine,
+  entryUrl,
+  formatReference,
+  getPublications,
+  getResearch,
+  getTeaching,
+} from "@/lib/content";
+import { withBase } from "@/lib/url";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = pagesCopy[lang].cv;
+const cv = cvContent[lang];
+
+const [publications, research, teaching] = await Promise.all([getPublications(), getResearch(), getTeaching()]);
+---
+
+<ArchiveLayout lang={lang} title={copy.title} path="/cv/">
+  {profile.cv && (
+    <div class="cv-download-links">
+      <p>{copy.downloadNote}</p>
+      <a href={withBase(profile.cv)} class="btn btn--primary" download>
+        {copy.downloadLabel}
+      </a>
+    </div>
+  )}
+
+  {cv.leading.map((section) => (
+    <>
+      <h1 id={section.id}>{section.heading}</h1>
+      <ul>
+        {section.entries.map((entry) => (
+          <li>
+            <Fragment set:html={entry.html} />
+            {entry.points && (
+              <ul>
+                {entry.points.map((point) => (
+                  <li set:html={point} />
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </>
+  ))}
+
+  <h1 id="publications">{cv.generated.publications}</h1>
+  <ul class="cv-list">
+    {publications.map((entry) => (
+      <ArchiveItem as="li" level={3} href={entryUrl(entry, lang)} title={entry.data.title}>
+        <p class="archive__item-excerpt" itemprop="description" set:html={formatReference(entry)} />
+      </ArchiveItem>
+    ))}
+  </ul>
+
+  <h1 id="working-papers">{cv.generated.workingPapers}</h1>
+  <ul>
+    {research.map((entry) => (
+      <li>
+        <a href={entryUrl(entry, lang)}>{entry.data.title}</a>. <Fragment set:html={entry.data.status} />.
+        {entry.data.coauthors.length > 0 && (
+          <>
+            {" "}
+            <Fragment set:html={coauthorLine(entry.data.coauthors)} />
+          </>
+        )}
+        {entry.data.links.map((link) => (
+          <>
+            {" "}
+            <a href={link.href}>{link.label}</a>.
+          </>
+        ))}
+      </li>
+    ))}
+  </ul>
+
+  <h1 id="teaching">{cv.generated.teaching}</h1>
+  <ul class="cv-list">
+    {teaching.map((entry) => (
+      <ArchiveItem as="li" level={3} href={entryUrl(entry, lang)} title={entry.data.title}>
+        <p set:html={courseLine(entry)} />
+      </ArchiveItem>
+    ))}
+  </ul>
+
+  {cv.trailing.map((section) => (
+    <>
+      <h1 id={section.id}>{section.heading}</h1>
+      <ul>
+        {section.entries.map((entry) => (
+          <li set:html={entry.html} />
+        ))}
+      </ul>
+    </>
+  ))}
+</ArchiveLayout>

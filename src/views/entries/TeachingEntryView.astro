@@ -1,0 +1,31 @@
+---
+import { render } from "astro:content";
+
+import type { Lang } from "@/i18n/config";
+import EntryLayout from "@/layouts/EntryLayout.astro";
+import { courseLine, entryUrl, type TeachingEntry } from "@/lib/content";
+import { stripHtml } from "@/lib/html";
+
+interface Props {
+  lang: Lang;
+  entry: TeachingEntry;
+  previous?: TeachingEntry;
+  next?: TeachingEntry;
+}
+
+const { lang, entry, previous, next } = Astro.props;
+const { Content } = await render(entry);
+const link = (other?: TeachingEntry) => other && { href: entryUrl(other, lang), title: other.data.title };
+---
+
+<EntryLayout
+  lang={lang}
+  title={entry.data.title}
+  path={`/teaching/${entry.id}/`}
+  description={stripHtml(entry.data.excerpt)}
+  previous={link(previous)}
+  next={link(next)}
+>
+  <p slot="meta" set:html={courseLine(entry)} />
+  <Content />
+</EntryLayout>

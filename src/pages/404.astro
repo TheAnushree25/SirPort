@@ -1,0 +1,13 @@
+---
+import ArchiveLayout from "@/layouts/ArchiveLayout.astro";
+import { useTranslations } from "@/i18n/ui";
+import { withBase } from "@/lib/url";
+
+const t = useTranslations("en");
+---
+
+<ArchiveLayout lang="en" title={t("notFound.title")} path="/404/" noindex>
+  <p>
+    {t("notFound.body")} <a href={withBase("/")}>{t("notFound.home")}</a>.
+  </p>
+</ArchiveLayout>

@@ -1,0 +1,32 @@
+// -----------------------------------------------------------------------------
+// Buttons: square, hairline-bordered, accent text.
+// -----------------------------------------------------------------------------
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0.25em;
+  padding: 0.5em 1em;
+  color: var(--accent);
+  font-family: var(--brand-sans);
+  font-size: 0.86rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--accent-deep);
+    background: var(--paper-2);
+    border-color: var(--accent-line);
+  }
+}
+
+.btn,
+.btn:hover,
+a.btn {
+  text-decoration: none !important;
+}

@@ -1,0 +1,23 @@
+---
+/**
+ * MathJax 3 for pages with TeX ($…$ inline, $$…$$ display). Loaded async and
+ * only where a page opts in, so it never blocks other scripts.
+ */
+---
+
+<script is:inline>
+  window.MathJax = {
+    tex: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"],
+      ],
+      displayMath: [
+        ["$$", "$$"],
+        ["\\[", "\\]"],
+      ],
+    },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+  };
+</script>
+<script is:inline async id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

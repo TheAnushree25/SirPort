@@ -1,0 +1,39 @@
+---
+/**
+ * Listing pages (research, publications, teaching, videos, CV):
+ * profile sidebar + an archive column headed by the page title.
+ */
+import AuthorProfile from "@/components/layout/AuthorProfile.astro";
+import { profile } from "@/data/profile";
+import type { Lang } from "@/i18n/config";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  lang: Lang;
+  /** Visible page title (also used for the document title). */
+  title: string;
+  path: string;
+  description?: string;
+  /** Extra classes on the archive column. */
+  class?: string;
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
+}
+
+const { lang, title, path, description, class: className, noindex } = Astro.props;
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${title} - ${profile.name}`}
+  description={description ?? profile.description}
+  path={path}
+  frame="sidebar"
+  noindex={noindex}
+>
+  <AuthorProfile lang={lang} />
+  <div class:list={["archive", className]}>
+    <h1 class="page__title">{title}</h1>
+    <slot />
+  </div>
+</BaseLayout>

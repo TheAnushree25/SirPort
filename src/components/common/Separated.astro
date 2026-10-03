@@ -1,0 +1,22 @@
+---
+/**
+ * Inline list joined by an ochre middle dot: `a<span class="sep">·</span> b`.
+ * Items are trusted inline html.
+ */
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+{items.map((item, index) => (
+  <>
+    {index > 0 && (
+      <>
+        <span class="sep">·</span>{" "}
+      </>
+    )}
+    <Fragment set:html={item} />
+  </>
+))}

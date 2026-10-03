@@ -1,0 +1,13 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+import { publicationPaths } from "@/lib/routes";
+import PublicationEntryView from "@/views/entries/PublicationEntryView.astro";
+
+export const getStaticPaths = (() => publicationPaths()) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { entry, previous, next } = Astro.props as Props;
+---
+
+<PublicationEntryView lang="en" entry={entry} previous={previous} next={next} />

@@ -1,0 +1,46 @@
+// -----------------------------------------------------------------------------
+// Design tokens as custom properties. Components read only these, so the dark
+// theme is a matter of redefining tokens on <html>.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+@mixin emit-palette($palette) {
+  @each $name, $value in $palette {
+    --#{$name}: #{$value};
+  }
+}
+
+:root {
+  @include emit-palette($palette-light);
+
+  --brand-serif:
+    "New York", ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, Cambria,
+    "Times New Roman", serif;
+  --brand-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --measure: 38rem;
+  --pad: clamp(1.25rem, 5vw, 4rem);
+
+  // Semantic aliases consumed by the structural layer.
+  --global-bg-color: var(--paper);
+  --global-footer-bg-color: var(--paper-2);
+  --global-border-color: var(--rule);
+  --global-dark-border-color: var(--rule);
+  --global-code-background-color: var(--paper-2);
+  --global-code-text-color: var(--ink);
+  --global-fig-caption-color: var(--muted);
+  --global-link-color: var(--accent);
+  --global-link-color-hover: var(--accent-deep);
+  --global-link-color-visited: var(--accent);
+  --global-masthead-link-color: var(--ink);
+  --global-masthead-link-color-hover: var(--accent);
+  --global-text-color: var(--body);
+  --global-text-color-light: var(--muted);
+  --global-thead-color: var(--paper-2);
+}
+
+html[data-theme="dark"] {
+  @include emit-palette($palette-dark);
+
+  --global-masthead-link-color-hover: var(--accent-deep);
+}

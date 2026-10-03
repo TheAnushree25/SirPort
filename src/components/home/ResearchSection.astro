@@ -1,0 +1,26 @@
+---
+import Separated from "@/components/common/Separated.astro";
+import type { HomeContent } from "@/data/home";
+import { escapeHtml } from "@/lib/html";
+import SplitSection from "./SplitSection.astro";
+
+interface Props {
+  research: HomeContent["research"];
+}
+
+const { research } = Astro.props;
+const [lead, ...rest] = research.themes;
+const themes = [`<b>${escapeHtml(lead)}</b>`, ...rest.map(escapeHtml)];
+---
+
+<SplitSection eyebrow={research.eyebrow}>
+  <h2>{research.heading}</h2>
+  <div class="prose">
+    {research.paragraphs.map((paragraph) => (
+      <p set:html={paragraph} />
+    ))}
+  </div>
+  <p class="themes">
+    <Separated items={themes} />
+  </p>
+</SplitSection>

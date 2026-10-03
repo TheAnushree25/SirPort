@@ -1,0 +1,65 @@
+// -----------------------------------------------------------------------------
+// Masthead: fixed top bar with a hairline rule and a short intro fade.
+// -----------------------------------------------------------------------------
+
+.masthead {
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  height: fit-content;
+  background: var(--paper);
+  box-shadow: none;
+  animation: intro 0.3s both;
+  animation-delay: 0.15s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--rule);
+  }
+}
+
+.masthead__inner-wrap {
+  clear: both;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: 0.62rem var(--pad);
+  font-family: var(--brand-sans);
+
+  nav {
+    z-index: 10;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.masthead__menu ul {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.masthead__menu-item {
+  display: block;
+  list-style-type: none;
+  white-space: nowrap;
+  background: var(--paper);
+}
+
+.masthead__menu-item--lg {
+  padding-right: 1.25rem;
+  font-weight: 700;
+}
+
+.masthead__controls > span {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}

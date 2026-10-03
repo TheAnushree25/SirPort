@@ -1,0 +1,13 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+import { teachingPaths } from "@/lib/routes";
+import TeachingEntryView from "@/views/entries/TeachingEntryView.astro";
+
+export const getStaticPaths = (() => teachingPaths()) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { entry, previous, next } = Astro.props as Props;
+---
+
+<TeachingEntryView lang="en" entry={entry} previous={previous} next={next} />

@@ -1,0 +1,52 @@
+// -----------------------------------------------------------------------------
+// Main content frame.
+//   .main--splash   full-bleed home page; sections manage their own wrap.
+//   .main--sidebar  profile sidebar + content column; stacks at 1120px.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+#main {
+  clear: both;
+  margin-inline: auto;
+  animation: intro 0.3s both;
+  animation-delay: 0.35s;
+
+  // Clearfix. On the sidebar grid this pseudo-element also becomes an empty
+  // trailing grid item, which contributes one row gap below the content.
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.main--splash {
+  max-width: none;
+  margin-top: 0;
+  padding-inline: 0;
+}
+
+.main--sidebar {
+  display: grid;
+  grid-template-columns: minmax(340px, 380px) minmax(0, 1fr);
+  gap: clamp(2rem, 4.5vw, 4rem);
+  max-width: 1280px;
+  margin-top: 0;
+  padding: clamp(3rem, 7vw, 5.5rem) var(--pad);
+
+  &.main--no-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  > .archive,
+  > .page {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: $bp-stack-sidebar) {
+    display: block;
+    padding-top: 2.4rem;
+  }
+}

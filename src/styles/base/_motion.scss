@@ -1,0 +1,38 @@
+// -----------------------------------------------------------------------------
+// Motion: page-intro fades and the global micro-transition on inline elements
+// (hover colours, underline offsets and theme switches ease over 200ms).
+// -----------------------------------------------------------------------------
+
+@keyframes intro {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+b,
+i,
+strong,
+em,
+blockquote,
+p,
+q,
+span,
+figure,
+img,
+h1,
+h2,
+header,
+input,
+a,
+tr,
+td,
+form button,
+input[type="submit"],
+.btn,
+.highlight {
+  transition: all 0.2s ease-in-out;
+}

@@ -1,0 +1,109 @@
+// -----------------------------------------------------------------------------
+// Profile sidebar used on every inner page.
+// -----------------------------------------------------------------------------
+@use "../settings/variables" as *;
+
+// Beside the content the profile stays in view while long pages scroll.
+// The identity transform matches the reference theme's own layer hint.
+.sidebar {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+  transform: translate3d(0, 0, 0);
+  margin: 0;
+  padding: 0 clamp(1.2rem, 3vw, 2rem) 0 0;
+  color: var(--muted);
+  border-right: 1px solid var(--rule);
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 0;
+    font-family: $font-system;
+  }
+
+  h3,
+  h4 {
+    font-size: 1em;
+  }
+
+  p,
+  li {
+    font-family: $font-system;
+    font-size: 0.75em;
+    line-height: 1.5;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  @media (max-width: $bp-stack-sidebar) {
+    position: static;
+    margin-bottom: 2rem;
+    padding: 0 0 1.5rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
+.author {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 0.9rem 1rem;
+  align-items: start;
+
+  @media (max-width: $bp-stack-sidebar) {
+    max-width: 46rem;
+  }
+}
+
+.author__avatar {
+  display: block;
+  width: 6rem;
+  max-width: 6rem;
+
+  img {
+    display: block;
+    width: 6rem;
+    min-width: 0;
+    max-width: 6rem;
+    height: 7.5rem;
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 16%;
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    box-shadow: none;
+
+    @media (min-width: $bp-large) {
+      padding: 5px;
+    }
+  }
+}
+
+.author__content {
+  display: block;
+  width: auto;
+  padding: 0;
+  line-height: 1.2;
+}
+
+.sidebar .author__name {
+  margin: 0 0 0.3rem;
+  color: var(--ink);
+  font-family: $font-system;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.sidebar .author__bio {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}

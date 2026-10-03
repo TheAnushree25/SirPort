@@ -1,0 +1,39 @@
+---
+import type { Lang } from "@/i18n/config";
+import { useTranslations } from "@/i18n/ui";
+
+interface PagerLink {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  lang: Lang;
+  previous?: PagerLink;
+  next?: PagerLink;
+}
+
+const { lang, previous, next } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav class="pagination" aria-label={t("nav.pager")}>
+  {previous ? (
+    <a href={previous.href} class="pagination--pager" title={previous.title}>
+      {t("pager.previous")}
+    </a>
+  ) : (
+    <a class="pagination--pager disabled" aria-disabled="true">
+      {t("pager.previous")}
+    </a>
+  )}
+  {next ? (
+    <a href={next.href} class="pagination--pager" title={next.title}>
+      {t("pager.next")}
+    </a>
+  ) : (
+    <a class="pagination--pager disabled" aria-disabled="true">
+      {t("pager.next")}
+    </a>
+  )}
+</nav>
